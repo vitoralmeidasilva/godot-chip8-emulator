@@ -7,6 +7,12 @@ A CHIP-8 emulator made with Godot (written in GDScript).
 
 This is a port to GDScript of a CHIP-8 emulator written originally in Java by [Johan](https://github.com/Johnnei/) based on his [YouTube](https://www.youtube.com/playlist?list=PL5PyurErl12czoLyYD8za68d61T_OZsP2) tutorials.
 
+## Binaries
+
+For the moment, only Windows binaries are available:
+
+* [Windows](https://1drv.ms/u/s!Ao1E4OCcZiFLjOoRWpQwGategr8XPw): Windows binary
+
 ## Getting Started
 
 To run the project load the `res://CRTViewportDisplay/CRT.scn` scene (run with CRT shaders) or load the `res://chip8.tscn` to run without CRT effects.
