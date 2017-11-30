@@ -3,7 +3,7 @@
 
 # Godot CHIP-8 Emulator
 
-A CHIP-8 emulator written in Godot.
+A CHIP-8 emulator made with Godot (written in GDScript).
 
 This is a port to GDScript of a CHIP-8 emulator written originally in Java by [Johan](https://github.com/Johnnei/) based on his [YouTube](https://www.youtube.com/playlist?list=PL5PyurErl12czoLyYD8za68d61T_OZsP2) tutorials.
 
