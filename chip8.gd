@@ -6,47 +6,6 @@
 
 extends Node2D
 
-# TODO:
-# ok - init chip 8 data
-# ok - opcode storage (each one are 2 bytes)
-# ok - show memory
-# ok - store font on memory
-# ok - opcodes
-# ok - which pass instructions are necessary
-# ok - show what happens when opcode is not supported
-# ok - graphics and opcodes [NEEDS OPTIMIZATION]
-# ok - crt shader
-# ok - compare output with implemented java emulator
-# ok - input and opcodes
-# ok - sound and opcodes
-# ok - make viewport or game window a little smaller to get into screen (easiest way)
-# ok - interface to test with as many ROMs as possible [GUI interface to choose available ROMs], use available flags wisely
-# ok - get more chip8 roms to test all possible combinations
-# ok - use to validate gameplay: http://chip8.byethost24.com/
-# - put everything on version control (GIT)
-# 	 - README with video, and credits to all assets (crt shader and beep.wav)
-# optimize performance [probably drawing functions (draw a sprite instead??)] - check in details the delayTimer (must be 60Hz)
-# ok - correct background color
-# ok - export to other platforms to see how godot behaves
-
-# - clean up and organize source code as I understand better Godot
-
-# POLISH
-# - does the input needs to be in a callback or the current way is fine?
-# ok - check crt standard parameters (get a more natural look, more old, more good looking)
-# nope - "export" the name of the ROM?
-# - keyboard on screen (thinking in mobile devices)
-# - implement other chipsets for more advanced chip8 emulators
-# - make things glow and user other colors like the 2d-3d example
-# - put the 2d node inside a 3d scene (arcade cab) (check pong example) [bonus]
-# nope - optimze crt shader effect on mobile (appearance)
-# - use another beep sound
-# - unsupported opcode needs to give a fine error on screen (perhaps a shaking showing the instruction with dynamic alterations of the shader)
-# - make a little draw sound then needRedraw flag is true?
-# probably not needed - "flashing" background? (alternating gray colors to give a sense of an old tv?)
-
-# resolution is 640x320 (upscaled 10x from the original 64x32 resolution)
-
 # exported configuration
 export(int) var scale = 10 # pixel scaling
 export(Color, RGB) var fgColor = Color(1.0, 1.0, 1.0) # foreground color
@@ -82,7 +41,7 @@ var delayTimer = 0
 var soundTimer = 0
 
 # drawing
-var display = [] # each entry here represents a pixel on screen
+var display = [] # each entry here represents a pixel on screen (resolution is 640x320 (upscaled 10x from the original 64x32 resolution))
 var needRedraw = false # does the game need to be redraw?
 
 # input
