@@ -23,7 +23,7 @@ onready var ROMSelector = get_node("../../ROMSelector") # TODO: make it better
 var memory = [] # 4kb (4096 bytes); each entry here is an integer representation of one byte
 var V = [] # 16 registers (called V0-VF)
 var I = 0 # address pointer (16 bit) (but only 12 bits are going to be used)
-var pc = int(0x200) # program counter (starts at memory location 0x200 h or 512 d)
+var pc = 0x200 # program counter (starts at memory location 0x200 h or 512 d)
 
 
 # stack
@@ -54,18 +54,7 @@ var keys = []
 
 func _ready():
 	randomize()
-#	initChip8()
-
-#	var ROM = "15PUZZLE"
-#	var ROM = "PONG3"
-#	var ROM = "INVADERS"
-#	var ROM = "UFO"
-#	var ROM = "BRIX"
-#	loadROM(ROM)
 	loadAvailableROMs()
-	
-#	clearScreen(bgColor)
-
 	set_process(true)
 
 func _process(delta):
@@ -174,9 +163,9 @@ func _process(delta):
 			var y = (opcode & 0x00F0) >> 4
 			print("Adding V[", y, "] to V[", y, "] = ", ((V[x] + V[y]) & 0xFF), ", Apply Carry if needed")
 			if (V[y] > 255 - V[x]):
-				V[int(0xF)] = 1
+				V[0xF] = 1
 			else:
-				V[int(0xF)] = 0
+				V[0xF] = 0
 
 			V[x] = ((V[x] + V[y]) & 0xFF)
 
@@ -186,17 +175,17 @@ func _process(delta):
 			var y = (opcode & 0x00F0) >> 4
 			print("Subtracting V[", y, "] from V[", x, "] = ", ((V[x] - V[y]) & 0xFF), ", Apply Borrow if needed, ")
 			if (V[x] > V[y]):
-				V[int(0xF)] = 1
+				V[0xF] = 1
 				print("No Borrow")
 			else:
-				V[int(0xF)] = 0
+				V[0xF] = 0
 				print("Borrow")
 
 			V[x] = ((V[x] - V[y]) & 0xFF)
 			pc += 2
 		elif (lsn == 0x0006): # 8XY6: Shifts VX right by one. VF is set to the value of the least significant bit of VX before the shift.[2]
 			var x = (opcode & 0x0F00) >> 8
-			V[int(0xF)] = (V[x] & 0x1)
+			V[0xF] = (V[x] & 0x1)
 			V[x] = (V[x] >> 1)
 			pc += 2
 			print("Shift V[", x, "] >> 1 and VF to LSB of VX")
@@ -205,16 +194,16 @@ func _process(delta):
 			var y = (opcode & 0x00F0) >> 4
 
 			if (V[x] > V[y]): # borrow
-				V[int(0xF)] = 0
+				V[0xF] = 0
 			else:
-				V[int(0xF)] = 1
+				V[0xF] = 1
 
 			V[x] = ((V[y] - V[x]) & 0xFF)
 
 			pc += 2
 		elif (lsn == 0x000E): # 8XYE: Shifts VX left by one. VF is set to the value of the most significant bit of VX before the shift.[2]
 			var x = (opcode & 0x0F00) >> 8
-			V[int(0xF)] = (V[x] & 0x80)
+			V[0xF] = (V[x] & 0x80)
 			V[x] = (V[x] << 1)
 			pc += 2
 			print("Shift V[", x, "] << 1 and VF to MSB of VX")
@@ -379,10 +368,6 @@ func _process(delta):
 
 
 func _draw():
-#	var x = randi() % int(get_viewport_rect().size.width)
-#	var y = randi() % int(get_viewport_rect().size.height)
-#	drawPixel(x, y, fgColor)
-
 	var color = null
 	var size = display.size()
 
@@ -392,9 +377,8 @@ func _draw():
 		else:
 			color = fgColor
 
-		#if (color == fgColor): # TODO: check if hack works
-		var x = int((i % 64))
-		var y = int(floor(float(i / 64)))
+		var x = ((i % 64))
+		var y = (floor((i / 64)))
 		drawPixel(x * scale, y * scale, color)
 
 
@@ -409,9 +393,6 @@ func clearScreen(color):
 # draw a pixel into coordinates x and y using color x
 # pixel size is configured from editor
 func drawPixel(x, y, color):
-#	var pos = Vector2(x, y)
-#	var size = Vector2(scale, scale)
-#	draw_rect(Rect2(pos, size), color)
 	draw_rect(Rect2(x, y, scale, scale), color)
 
 
@@ -427,7 +408,7 @@ func intToHex(integer):
 
 func initChip8():
 	I = 0
-	pc = int(0x200)
+	pc = 0x200
 	stackPointer = 0
 	loaded = false
 	running = false
@@ -458,31 +439,30 @@ func initChip8():
 
 	stack.resize(16 + 1)
 	loadFont()
-#	loadAvailableROMs()
 
 
 
 func loadFont():
 	# values are in hexadecimal
 	var fontset = [
-		int(0xF0), int(0x90), int(0x90), int(0x90), int(0xF0), # 0
-		int(0x20), int(0x60), int(0x20), int(0x20), int(0x70), # 1
-		int(0xF0), int(0x10), int(0xF0), int(0x80), int(0xF0), # 2
-		int(0xF0), int(0x10), int(0xF0), int(0x10), int(0xF0), # 3
-		int(0x90), int(0x90), int(0xF0), int(0x10), int(0x10), # 4
-		int(0xF0), int(0x80), int(0xF0), int(0x10), int(0xF0), # 5
-		int(0xF0), int(0x80), int(0xF0), int(0x90), int(0xF0), # 6
-		int(0xF0), int(0x10), int(0x20), int(0x40), int(0x40), # 7
-		int(0xF0), int(0x90), int(0xF0), int(0x90), int(0xF0), # 8
-		int(0xF0), int(0x90), int(0xF0), int(0x10), int(0xF0), # 9
-		int(0xF0), int(0x90), int(0xF0), int(0x90), int(0x90), # A
-		int(0xE0), int(0x90), int(0xE0), int(0x90), int(0xE0), # B
-		int(0xF0), int(0x80), int(0x80), int(0x80), int(0xF0), # C
-		int(0xE0), int(0x90), int(0x90), int(0x90), int(0xE0), # D
-		int(0xF0), int(0x80), int(0xF0), int(0x80), int(0xF0), # E
-		int(0xF0), int(0x80), int(0xF0), int(0x80), int(0x80)  # F
+		0xF0, 0x90, 0x90, 0x90, 0xF0, # 0
+		0x20, 0x60, 0x20, 0x20, 0x70, # 1
+		0xF0, 0x10, 0xF0, 0x80, 0xF0, # 2
+		0xF0, 0x10, 0xF0, 0x10, 0xF0, # 3
+		0x90, 0x90, 0xF0, 0x10, 0x10, # 4
+		0xF0, 0x80, 0xF0, 0x10, 0xF0, # 5
+		0xF0, 0x80, 0xF0, 0x90, 0xF0, # 6
+		0xF0, 0x10, 0x20, 0x40, 0x40, # 7
+		0xF0, 0x90, 0xF0, 0x90, 0xF0, # 8
+		0xF0, 0x90, 0xF0, 0x10, 0xF0, # 9
+		0xF0, 0x90, 0xF0, 0x90, 0x90, # A
+		0xE0, 0x90, 0xE0, 0x90, 0xE0, # B
+		0xF0, 0x80, 0x80, 0x80, 0xF0, # C
+		0xE0, 0x90, 0x90, 0x90, 0xE0, # D
+		0xF0, 0x80, 0xF0, 0x80, 0xF0, # E
+		0xF0, 0x80, 0xF0, 0x80, 0x80  # F
 	]
-	var start = int(0x50) # starting position is 0x50 h or 80 d
+	var start = 0x50 # starting position is 0x50 h or 80 d
 	var offset = 0
 	var size = fontset.size()
 	for i in range(size):
@@ -500,7 +480,7 @@ func loadROM(ROM):
 	loaded = false
 	running = false
 
-	var start = int(0x200) # starting position is 0x200 h or 512 d (511 d because of arrays are zero indexed)
+	var start = 0x200 # starting position is 0x200 h or 512 d (511 d because of arrays are zero indexed)
 	var offset = 0
 
 	var file = File.new()
@@ -510,13 +490,7 @@ func loadROM(ROM):
 
 	for byte in bytes:
 		memory[start + offset] = byte # integer
-		#chip8["memory"][start + offset] = intToHex(byte) # hexadecimal
-		#print("memory[0x",intToHex(start + offset),"] = '0x",intToHex(byte),"'")
 		offset += 1
-
-	# clean the rest of unused memory
-#	for i in range(start + bytes.size(), memory.size()):
-#		memory[i] = 0
 
 	loaded = true
 	running = true
@@ -535,12 +509,12 @@ func setKeyBuffer():
 	keys[7] = Input.is_key_pressed(KEY_7)
 	keys[8] = Input.is_key_pressed(KEY_8)
 	keys[9] = Input.is_key_pressed(KEY_9)
-	keys[int(0x0A)] = Input.is_key_pressed(KEY_A)
-	keys[int(0x0B)] = Input.is_key_pressed(KEY_B)
-	keys[int(0x0C)] = Input.is_key_pressed(KEY_C)
-	keys[int(0x0D)] = Input.is_key_pressed(KEY_D)
-	keys[int(0x0E)] = Input.is_key_pressed(KEY_E)
-	keys[int(0x0F)] = Input.is_key_pressed(KEY_F)
+	keys[0x0A] = Input.is_key_pressed(KEY_A)
+	keys[0x0B] = Input.is_key_pressed(KEY_B)
+	keys[0x0C] = Input.is_key_pressed(KEY_C)
+	keys[0x0D] = Input.is_key_pressed(KEY_D)
+	keys[0x0E] = Input.is_key_pressed(KEY_E)
+	keys[0x0F] = Input.is_key_pressed(KEY_F)
 
 func playBeep():
 	get_node("SamplePlayer").play("beep")
@@ -570,19 +544,4 @@ func loadAvailableROMs():
 	ROMSelector.connect("item_selected", self, "on_item_selected")
 
 func on_item_selected(id):
-	#print(availableROMs[id])
 	loadROM(availableROMs[id])
-
-
-# OLD READING CODE
-	#var bytes = file.get_buffer(file.get_len()) # RawArray
-	#var bi = 0
-	#var opcodeBuffer = "" # opcode buffer to store to bytes on reading
-	#var curOpcode = "" # current opcode being read
-	#for byte in bytes:
-		#opcodeBuffer += intToHex(byte)
-		#if (bi % 2):
-			#curOpcode = opcodeBuffer
-			#opcodeBuffer = ""
-			#print(curOpcode, ": ") # we have a string representation of an opcode
-		#bi += 1
