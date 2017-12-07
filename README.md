@@ -19,6 +19,17 @@ For the moment, only Windows binaries are available:
 
 To run the project load the `res://CRTViewportDisplay/CRT.scn` scene (run with CRT shaders) or load the `res://chip8.tscn` to run without CRT effects.
 
+## Controlling the games
+
+The original CHIP-8 uses 16 keys mapped to the following layout:
+
+ ``1 2 3 C``
+ ``4 5 6 D``
+ ``7 8 9 E``
+ ``A 0 B F``
+
+The current implementation maps these keys to its correspondents in the keyboard: 1-9 and A-F.
+
 
 ## Built With
 
