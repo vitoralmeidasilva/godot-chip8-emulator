@@ -3,17 +3,19 @@
 
 # Godot CHIP-8 Emulator
 
-A CHIP-8 emulator made with Godot (written in GDScript).
+A CHIP-8 emulator made with Godot (version 2.1.4 stable).
 
-This is a port of a CHIP-8 emulator written originally in Java to GDScript.
+This is a port to GDScript of a CHIP-8 emulator written originally in Java.
 
 The original Java emulator was created by [Johan](https://github.com/Johnnei/) based on his [YouTube](https://www.youtube.com/playlist?list=PL5PyurErl12czoLyYD8za68d61T_OZsP2) tutorials.
 
 ## Binaries
 
-For the moment, only Windows binaries are available:
+The following binaries are available:
 
-* [Windows](https://1drv.ms/u/s!Ao1E4OCcZiFLjOoRWpQwGategr8XPw): Windows binary
+* [Linux](https://1drv.ms/u/s!Ao1E4OCcZiFLjbMFKweFLqk-9yLpfQ): Linux binary
+* [Windows](https://1drv.ms/u/s!Ao1E4OCcZiFLjbMGziMPz4i-YY2KSQ): Windows binary
+* [Mac OSX](https://1drv.ms/u/s!Ao1E4OCcZiFLjbMEEnr2vz1lBNwGaQ): Mac OSX binary
 
 ## Getting Started
 
