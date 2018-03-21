@@ -26,7 +26,7 @@ Old binaries for 2.x versions are still available:
 
 ## Getting Started
 
-To run the project load the `res://CRTViewportDisplay/CRT.scn` scene (run with CRT shaders) or load the `res://chip8.tscn` to run without CRT effects.
+To run the project inside Godot load the `res://main.tscn` scene.
 
 ## Controlling the games
 
