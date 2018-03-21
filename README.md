@@ -1,9 +1,9 @@
 
-![screenshot](https://i2jsuw-bn1305.files.1drv.com/y4mz0D9uo-ed-R8nkLJTTlokmgG5YbfS50HLpmSBvhnZF2fErRYf55deiphsaUAXRHjPxFLLgdfjFn0B1cCb0PyCAolTtT8RsyDW4-09hKwYaE-dsIeGMZF2CXSopXpDL7ycc3WpWMORlZsTnUaCbxNLssE1CujzlQn2G_VQt7Dwl6jCqiIhFTQ0IzqloPIIEyyvFVVr0RSE-kbx4SYxm6c3Q/Video_1511917204.gif?psid=1)
+![screenshot](https://onedrive.live.com/embed?cid=4B21669CE0E0448D&resid=4B21669CE0E0448D%21225836&authkey=AMcIYvzMIpEx9ic)
 
 # Godot CHIP-8 Emulator
 
-A CHIP-8 emulator made with Godot (version 2.1.4 stable).
+A CHIP-8 emulator made with Godot (version 3.0.2 stable).
 
 This is a port to GDScript of a CHIP-8 emulator written originally in Java.
 
@@ -11,7 +11,14 @@ The original Java emulator was created by [Johan](https://github.com/Johnnei/) b
 
 ## Binaries
 
-The following binaries are available:
+Binaries for the most up to date versions:
+
+* [Linux](https://1drv.ms/u/s!Ao1E4OCcZiFLjeQq2-4osd-VkElvDQ): Linux binary
+* [Windows](https://1drv.ms/u/s!Ao1E4OCcZiFLjeQn--HUDudbb0uB4A): Windows binary
+* [Mac OSX](https://1drv.ms/u/s!Ao1E4OCcZiFLjeQpMVwghBxa93sZ3w): Mac OSX binary
+
+
+Old binaries for 2.x versions are still available:
 
 * [Linux](https://1drv.ms/u/s!Ao1E4OCcZiFLjbMFKweFLqk-9yLpfQ): Linux binary
 * [Windows](https://1drv.ms/u/s!Ao1E4OCcZiFLjbMGziMPz4i-YY2KSQ): Windows binary

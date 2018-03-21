@@ -1,0 +1,360 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://chip8.tscn" type="PackedScene" id=1]
+[ext_resource path="res://shaders/white.png" type="Texture" id=2]
+[ext_resource path="res://ui.tscn" type="PackedScene" id=3]
+[ext_resource path="res://shaders/CRTFrame.png" type="Texture" id=4]
+
+[sub_resource type="Shader" id=1]
+
+code = "shader_type canvas_item;
+
+uniform float BarrelPower =1.05;//1.1;
+
+vec2 distort(vec2 p) 
+{
+
+	float angle = p.y / p.x;
+	float theta = atan(p.y,p.x);
+	float radius = pow(length(p), BarrelPower);
+	
+	p.x = radius * cos(theta);
+	p.y = radius * sin(theta);
+	
+	return 0.5 * (p + vec2(1.0,1.0));
+}
+void fragment()
+{
+	
+vec2 xy = SCREEN_UV * 2.0;
+xy.x -= 1.0;
+xy.y -= 1.0;
+
+float d = length(xy);
+if(d < 1.5){
+	xy = distort(xy);
+}
+else{
+	xy = SCREEN_UV;
+}
+COLOR = texture(SCREEN_TEXTURE,xy);
+}
+
+
+
+"
+
+[sub_resource type="ShaderMaterial" id=2]
+
+render_priority = 0
+shader = SubResource( 1 )
+shader_param/BarrelPower = 1.05
+_sections_unfolded = [ "Resource", "shader_param" ]
+
+[sub_resource type="Shader" id=3]
+
+code = "shader_type canvas_item;
+
+uniform float color_bleeding = 2;//0.9;
+uniform float bleeding_range = 2;
+uniform float screen_width = 640;
+void fragment()
+{
+	float pixel_size = 1.0/screen_width*bleeding_range;
+	vec4 color_left = texture(SCREEN_TEXTURE,SCREEN_UV - vec2(pixel_size, 0));
+	vec4 current_color = texture(SCREEN_TEXTURE,SCREEN_UV);
+	current_color = current_color*vec4(color_bleeding,0.5,0.25,1);
+	color_left = color_left*vec4(0.25,0.5,color_bleeding,1);
+	COLOR.rgba = (current_color + color_left);
+}"
+_sections_unfolded = [ "Resource" ]
+
+[sub_resource type="ShaderMaterial" id=4]
+
+render_priority = 0
+shader = SubResource( 3 )
+shader_param/color_bleeding = 2.0
+shader_param/bleeding_range = 2.0
+shader_param/screen_width = 640.0
+_sections_unfolded = [ "Resource", "shader_param" ]
+
+[sub_resource type="Shader" id=5]
+
+code = "shader_type canvas_item;
+
+uniform float lines_distance = 2.0;
+uniform float pixel_size = 2.0;
+uniform float size_screen = 600;
+uniform float scanline_alpha = 0.9;
+uniform float lines_velocity = 5; //30.0;
+
+void fragment()
+{
+	float line_row = floor((SCREEN_UV.y * size_screen/pixel_size) + mod(TIME*lines_velocity, lines_distance));
+
+	float n = 1.0 - ceil((mod(line_row,lines_distance)/lines_distance));
+
+vec4 c = texture(SCREEN_TEXTURE,SCREEN_UV);
+c = c - n*c*(1.0 - scanline_alpha);
+c.a = 1.0;
+COLOR = c;
+}"
+
+[sub_resource type="ShaderMaterial" id=6]
+
+render_priority = 0
+shader = SubResource( 5 )
+shader_param/lines_distance = 2.0
+shader_param/pixel_size = 2.0
+shader_param/size_screen = 8.0
+shader_param/scanline_alpha = 0.9
+shader_param/lines_velocity = 5.0
+_sections_unfolded = [ "Resource", "shader_param" ]
+
+[sub_resource type="Shader" id=7]
+
+code = "shader_type canvas_item;
+
+uniform float screen_width = 1024;
+uniform float screen_height = 600;
+
+// Curvature
+uniform float BarrelPower =1.1;
+// Color bleeding
+uniform float color_bleeding = 1.2;
+uniform float bleeding_range_x = 3;
+uniform float bleeding_range_y = 3;
+// Scanline
+uniform float lines_distance = 4.0;
+uniform float scan_size = 2.0;
+uniform float scanline_alpha = 0.9;
+uniform float lines_velocity = 30.0;
+vec2 distort(vec2 p) 
+{
+
+	float angle = p.y / p.x;
+	float theta = atan(p.y,p.x);
+	float radius = pow(length(p), BarrelPower);
+	
+	p.x = radius * cos(theta);
+	p.y = radius * sin(theta);
+	
+	return 0.5 * (p + vec2(1.0,1.0));
+}
+
+void get_color_bleeding(inout vec4 current_color,inout vec4 color_left){
+	current_color = current_color*vec4(color_bleeding,0.5,0.25,1);
+	color_left = color_left*vec4(0.25,0.5,color_bleeding,1);
+}
+
+void get_color_scanline(vec2 uv,inout vec4 c,float TIME){
+	float line_row = floor((uv.y * screen_height/scan_size) + mod(TIME*lines_velocity, lines_distance));
+
+	float n = 1.0 - ceil((mod(line_row,lines_distance)/lines_distance));
+
+	c = c - n*c*(1.0 - scanline_alpha);
+	c.a = 1.0;
+
+}
+
+void fragment()
+{
+	
+vec2 xy = SCREEN_UV * 2.0;
+xy.x -= 1.0;
+xy.y -= 1.0;
+
+float d = length(xy);
+if(d < 1.5){
+	xy = distort(xy);
+}
+else{
+	xy = SCREEN_UV;
+}
+
+float pixel_size_x = 1.0/screen_width*bleeding_range_x;
+float pixel_size_y = 1.0/screen_height*bleeding_range_y;
+
+//vec4 color_left = texture(SCREEN_TEXTURE,SCREEN_UV - vec2(pixel_size_x, pixel_size_y));
+vec4 color_left = texture(SCREEN_TEXTURE,xy - vec2(pixel_size_x, pixel_size_y));
+//vec4 current_color = texture(SCREEN_TEXTURE,SCREEN_UV);
+vec4 current_color = texture(SCREEN_TEXTURE,xy);
+
+get_color_bleeding(current_color,color_left);
+vec4 c = current_color+color_left;
+get_color_scanline(xy,c,TIME);
+
+COLOR = c;
+}
+"
+_sections_unfolded = [ "Resource" ]
+
+[sub_resource type="ShaderMaterial" id=8]
+
+render_priority = 0
+shader = SubResource( 7 )
+shader_param/screen_width = 640.0
+shader_param/screen_height = 355.0
+shader_param/BarrelPower = 1.05
+shader_param/color_bleeding = 2.0
+shader_param/bleeding_range_x = 2.0
+shader_param/bleeding_range_y = 2.0
+shader_param/lines_distance = 2.0
+shader_param/scan_size = 8.0
+shader_param/scanline_alpha = 0.9
+shader_param/lines_velocity = 5.0
+_sections_unfolded = [ "Resource", "shader_param" ]
+
+[node name="screen" type="Control" index="0"]
+
+modulate = Color( 0.371094, 1, 0.395597, 1 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 640.0
+margin_bottom = 355.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Margin", "Material", "Mouse", "Rect", "Size Flags", "Theme", "Visibility" ]
+
+[node name="chip8" parent="." index="0" instance=ExtResource( 1 )]
+
+position = Vector2( 4, 7 )
+scale = Vector2( 0.985, 0.999 )
+_sections_unfolded = [ "Material", "Pause", "Transform", "Visibility", "Z Index" ]
+fgColor = Color( 0.270287, 0.765625, 0.131592, 1 )
+bgColor = Color( 0.124741, 0.425781, 0.1365, 1 )
+
+[node name="Shaders" type="Control" parent="." index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 640.0
+margin_bottom = 355.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Material", "Pause", "Visibility" ]
+
+[node name="Curvature" type="TextureRect" parent="Shaders" index="0"]
+
+visible = false
+material = SubResource( 2 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 640.0
+margin_bottom = 355.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 0
+_sections_unfolded = [ "Focus", "Grow Direction", "Hint", "Margin", "Material", "Mouse", "Pause", "Rect", "Size Flags", "Theme", "Visibility" ]
+
+[node name="ColorBleeding" type="TextureRect" parent="Shaders" index="1"]
+
+visible = false
+material = SubResource( 4 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 640.0
+margin_bottom = 355.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 0
+_sections_unfolded = [ "Material", "Pause" ]
+
+[node name="ScanLine" type="TextureRect" parent="Shaders" index="2"]
+
+visible = false
+material = SubResource( 6 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 640.0
+margin_bottom = 355.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 0
+_sections_unfolded = [ "Material", "Rect" ]
+
+[node name="CRT" type="TextureRect" parent="Shaders" index="3"]
+
+material = SubResource( 8 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 640.0
+margin_bottom = 355.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 0
+_sections_unfolded = [ "Material", "Visibility" ]
+
+[node name="ui" parent="." index="2" instance=ExtResource( 3 )]
+
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -34.0
+margin_bottom = 0.0
+
+[node name="CRTFrame" type="TextureRect" parent="." index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 677.0
+margin_bottom = 481.0
+rect_min_size = Vector2( 640, 355 )
+rect_scale = Vector2( 0.946396, 0.738916 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 0
+_sections_unfolded = [ "Focus", "Hint", "Material", "Mouse", "Rect", "Size Flags", "Theme" ]
+
+

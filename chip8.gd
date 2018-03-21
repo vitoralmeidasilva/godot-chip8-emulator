@@ -1,13 +1,13 @@
-# G8 - Godot Chip 8 Emulator
+# Godot Chip 8 Emulator
 #
 # Based on original Java code written by Johan (https://github.com/Johnnei/Youtube-Tutorials/tree/master/emulator_chip8)
 # Ported to Godot by Vitor Almeida da Silva on November 2017 (https://github.com/vitoralmeidasilva)
-#
+# Uses a SimpleGodotCRTShader: A simple Godot (v2.x) shader that simulates CRT Displays by Henrique Alves (https://github.com/henriquelalves/SimpleGodotCRTShader)
 
 extends Node2D
 
 # exported configuration
-export(int) var scale = 10 # pixel scaling
+export(int) var pixelScale = 10 # pixel scaling
 export(Color, RGB) var fgColor = Color(1.0, 1.0, 1.0) # foreground color
 export(Color, RGB) var bgColor = Color(0.0, 0.0, 0.0) # background color
 
@@ -16,8 +16,7 @@ var romsPath = "res://roms/"
 var availableROMs = []
 
 # UI
-onready var ROMSelector = get_node("../../ROMSelector") # TODO: make it better
-
+onready var ROMSelector = get_node("/root/screen/ui/PanelContainer/HBoxContainer/ROMSelector")
 
 # chip8 console
 var memory = [] # 4kb (4096 bytes); each entry here is an integer representation of one byte
@@ -25,11 +24,9 @@ var V = [] # 16 registers (called V0-VF)
 var I = 0 # address pointer (16 bit) (but only 12 bits are going to be used)
 var pc = 0x200 # program counter (starts at memory location 0x200 h or 512 d)
 
-
 # stack
 var stack = [] # stack (current implementation is 16 levels)
 var stackPointer = 0 # current stack pointer (index)
-
 
 # flags for running state
 var loaded = false # ROM loaded on memory
@@ -52,16 +49,22 @@ var keys = []
 # 7 8 9 E
 # A 0 B F
 
+
+
 func _ready():
 	randomize()
 	loadAvailableROMs()
-	set_process(true)
+	
+	# chooses a random ROM at startup (debug)
+	var i = randi() % availableROMs.size()
+	ROMSelector.select(i)
+	on_item_selected(i)
 
 func _process(delta):
 	if (!running):
 		return
 	
-	setKeyBuffer()
+	#setKeyBuffer()
 	
 	# process opcodes
 	var opcode = ((memory[pc] << 8) | memory[pc + 1])
@@ -271,14 +274,14 @@ func _process(delta):
 		if (lsb == 0x009E): # EX9E: Skips the next instruction if the key stored in VX is pressed.
 			var x = (opcode & 0x0F00) >> 8
 			var key = V[x]
-			if (keys[key] == 1):
+			if (keys[key] == true):
 				pc += 4
 			else:
 				pc += 2
 		elif (lsb == 0x00A1): # EXA1: Skips the next instruction if the key stored in VX isnt pressed.
 			var x = (opcode & 0x0F00) >> 8
 			var key = V[x]
-			if (keys[key] == 0):
+			if (keys[key] == false):
 				pc += 4
 			else:
 				pc += 2
@@ -296,7 +299,7 @@ func _process(delta):
 		elif (lsb == 0x000A): # FX0A: A key press is awaited, and then stored in VX.
 			var x = (opcode & 0x0F00) >> 8
 			for i in range(keys.size()):
-				if (keys[i] == 1):
+				if (keys[i] == true):
 					V[x] = i
 					pc += 2
 			print("Awaiting keypress to be stored in V[", x, "]")
@@ -364,9 +367,6 @@ func _process(delta):
 	if (needRedraw):
 		update()
 
-
-
-
 func _draw():
 	var color = null
 	var size = display.size()
@@ -379,7 +379,7 @@ func _draw():
 
 		var x = ((i % 64))
 		var y = (floor((i / 64)))
-		drawPixel(x * scale, y * scale, color)
+		drawPixel(x * pixelScale, y * pixelScale, color)
 
 
 # clear the screen
@@ -389,21 +389,16 @@ func clearScreen(color):
 		display[i] = 0
 
 
-
 # draw a pixel into coordinates x and y using color x
 # pixel size is configured from editor
 func drawPixel(x, y, color):
-	draw_rect(Rect2(x, y, scale, scale), color)
+	draw_rect(Rect2(x, y, pixelScale, pixelScale), color)
 
 
-
-
-# converte the integer argument to an hexadecimal string representation (using two chars)
+# convert the integer argument to an hexadecimal string representation (using two chars)
 # example: 10 d becomes 0A h
 func intToHex(integer):
 	return "%02X" % integer
-
-
 
 
 func initChip8():
@@ -435,11 +430,10 @@ func initChip8():
 	var kSize = 16
 	keys.resize(kSize)
 	for i in range(kSize):
-		keys[i] = 0
+		keys[i] = false
 
 	stack.resize(16 + 1)
 	loadFont()
-
 
 
 func loadFont():
@@ -470,9 +464,6 @@ func loadFont():
 			offset += 1
 
 
-
-
-
 # load ROM of name "name" into memory
 func loadROM(ROM):
 	initChip8()
@@ -496,9 +487,8 @@ func loadROM(ROM):
 	running = true
 
 
-
-
-func setKeyBuffer():
+#func setKeyBuffer():
+func _input(event):
 	keys[0] = Input.is_key_pressed(KEY_0)
 	keys[1] = Input.is_key_pressed(KEY_1)
 	keys[2] = Input.is_key_pressed(KEY_2)
@@ -516,8 +506,11 @@ func setKeyBuffer():
 	keys[0x0E] = Input.is_key_pressed(KEY_E)
 	keys[0x0F] = Input.is_key_pressed(KEY_F)
 
+
 func playBeep():
-	get_node("SamplePlayer").play("beep")
+	#get_node("SamplePlayer").play("beep")
+	pass
+
 
 func loadAvailableROMs():
 	var dir = Directory.new()
@@ -542,6 +535,7 @@ func loadAvailableROMs():
 		ROMSelector.add_item(availableROMs[i])
 	
 	ROMSelector.connect("item_selected", self, "on_item_selected")
+
 
 func on_item_selected(id):
 	loadROM(availableROMs[id])
