@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Appear-KP-1137861048.wav-aa7fad1af17c93fed4aa446fcef9df84.sample"
+
+[deps]
+
+source_file="res://sounds/Appear-KP-1137861048.wav"
+source_md5="981beb930903ce6d7236e34bf0022b80"
+
+dest_files=[ "res://.import/Appear-KP-1137861048.wav-aa7fad1af17c93fed4aa446fcef9df84.sample" ]
+dest_md5="e6f256949d1e60f5f83eabf95d92ea7a"
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

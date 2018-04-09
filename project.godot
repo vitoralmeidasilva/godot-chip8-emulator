@@ -10,15 +10,16 @@ config_version=3
 
 [application]
 
-config/name="CHIP-8"
+config/name="Godot CHIP-8 Emulator"
 run/main_scene="res://main.tscn"
 config/icon="res://icon.png"
+config/vsync/use_vsync=true
 
 [display]
 
 window/size/width=640
 window/size/height=355
-window/size/resizable=false
+window/vsync/use_vsync=false
 window/stretch/mode="viewport"
 
 [rendering]

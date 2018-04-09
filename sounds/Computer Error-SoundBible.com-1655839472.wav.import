@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Computer Error-SoundBible.com-1655839472.wav-2f0ce6186b24f753b6bce4a944271706.sample"
+
+[deps]
+
+source_file="res://sounds/Computer Error-SoundBible.com-1655839472.wav"
+source_md5="7819e23ce01a3da1e34b2573001a8361"
+
+dest_files=[ "res://.import/Computer Error-SoundBible.com-1655839472.wav-2f0ce6186b24f753b6bce4a944271706.sample" ]
+dest_md5="39f7a5d1ca19f85096a8a01573e43997"
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

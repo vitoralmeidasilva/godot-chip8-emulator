@@ -7,10 +7,10 @@ path="res://.import/white.png-737ccdfdddcc9a1f07e2f5b6b362d327.stex"
 [deps]
 
 source_file="res://shaders/white.png"
-source_md5="b68844373120b3795a9b80a7922d0c76"
+source_md5="7129c0ddaddd72db0fae6e2bc5e4f1a0"
 
 dest_files=[ "res://.import/white.png-737ccdfdddcc9a1f07e2f5b6b362d327.stex" ]
-dest_md5="f17f3e225bc88873851ebd43ba696987"
+dest_md5="0ce9a2e546fa9e0acdc99f3dc75130c4"
 
 [params]
 
