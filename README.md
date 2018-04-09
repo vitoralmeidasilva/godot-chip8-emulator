@@ -1,5 +1,5 @@
 
-![screenshot](https://i.imgur.com/4zmkF2J.gifv)
+![screenshot](https://goo.gl/NdHk1d)
 
 # Godot CHIP-8 Emulator
 
