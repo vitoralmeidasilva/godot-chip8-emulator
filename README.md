@@ -1,5 +1,5 @@
 
-![screenshot](https://jmclia.bn.files.1drv.com/y4mkN4wV2XNEeiGPqQoe6WoTuTN5egcyHQ1b-vxfZE_yuHYYo9gg4ef4v1_yiHR6Xul70_VbDrctVBiuhi-3Ld0cBhaZhWsiflhYrp78_d-lG0KN5wkGVCHVVRLMF2qtiYjjsTjRGsdv31wD7lyh8yql-yStV1Irc-xDywa7Yx_g-n-SeDilMF1iu-FBY2feTHN8KFumPg1uaBPJ-zJF4K4Rw/Video_1523264210.gif?psid=1)
+![screenshot](https://i.imgur.com/4zmkF2J.gifv)
 
 # Godot CHIP-8 Emulator
 
