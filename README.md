@@ -1,5 +1,6 @@
 
-![screenshot](https://goo.gl/NdHk1d)
+![CHIP-8 Emulator screenshot](https://goo.gl/wMvZGx "CHIP-8 Emulator") ![CHIP-8 Emulator screenshot](https://goo.gl/Unqeiu "CHIP-8 Emulator") ![CHIP-8 Emulator screenshot](https://goo.gl/aDHc27 "CHIP-8 Emulator") ![CHIP-8 Emulator screenshot](https://goo.gl/gXxrFe "CHIP-8 Emulator")
+![CHIP-8 Emulator screenshot](https://goo.gl/BAF6Ub "CHIP-8 Emulator") ![CHIP-8 Emulator screenshot](https://goo.gl/ibFzuW "CHIP-8 Emulator") ![CHIP-8 Emulator screenshot](https://goo.gl/jNAWx7 "CHIP-8 Emulator") ![CHIP-8 Emulator screenshot](https://goo.gl/QSzU27 "CHIP-8 Emulator")
 
 # Godot CHIP-8 Emulator
 
