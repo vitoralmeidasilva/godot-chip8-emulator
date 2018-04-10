@@ -1,15 +1,15 @@
 
-![CHIP-8 Emulator screenshot](https://goo.gl/wMvZGx "CHIP-8 Emulator") ![CHIP-8 Emulator screenshot](https://goo.gl/Unqeiu "CHIP-8 Emulator") ![CHIP-8 Emulator screenshot](https://goo.gl/aDHc27 "CHIP-8 Emulator") ![CHIP-8 Emulator screenshot](https://goo.gl/gXxrFe "CHIP-8 Emulator")
-![CHIP-8 Emulator screenshot](https://goo.gl/BAF6Ub "CHIP-8 Emulator") ![CHIP-8 Emulator screenshot](https://goo.gl/ibFzuW "CHIP-8 Emulator") ![CHIP-8 Emulator screenshot](https://goo.gl/jNAWx7 "CHIP-8 Emulator") ![CHIP-8 Emulator screenshot](https://goo.gl/QSzU27 "CHIP-8 Emulator")
+![CHIP-8 Emulator screenshot](https://goo.gl/wMvZGx "CHIP-8 Emulator")
 
 # Godot CHIP-8 Emulator
-
 
 [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) is an interpreted programming language, developed by Joseph Weisbecker. It was initially used on the COSMAC VIP and Telmac 1800 8-bit microcomputers in the mid-1970s. CHIP-8 programs are run on a CHIP-8 virtual machine. It was made to allow video games to be more easily programmed for said computers.
 
 [Godot](https://godotengine.org) is a full featured, multi-platform, 2D and 3D open source game engine. It uses, among other languages, a scripting language called (GDScript)[http://docs.godotengine.org/en/3.0/getting_started/scripting/gdscript/gdscript_basics.html].
 
 There is a CHIP-8 implementation for almost every platform, as well as some development tools. This is an attempt to see what is possible within the limits of GDScript and Godot (it is a port to GDScript of a CHIP-8 emulator written originally in Java; the original Java emulator was created by [Johan](https://github.com/Johnnei/) based on his [YouTube](https://www.youtube.com/playlist?list=PL5PyurErl12czoLyYD8za68d61T_OZsP2) tutorials).
+
+![CHIP-8 Emulator screenshot](https://goo.gl/Unqeiu "CHIP-8 Emulator")
 
 ## Download
 
@@ -29,6 +29,8 @@ Older binaries for 2.x versions are still online:
 * [Mac OSX](https://1drv.ms/u/s!Ao1E4OCcZiFLjbMEEnr2vz1lBNwGaQ): Mac OSX binary
 
 
+![CHIP-8 Emulator screenshot](https://goo.gl/aDHc27 "CHIP-8 Emulator")
+
 ## Controlling the games
 
 The keyboard input is a 16-key keyboard with keys 0 − 9, A − F:
@@ -39,6 +41,11 @@ The '8', '4', '6', and '2' keys are typically used for directional input (for co
 
 The current implementation maps these keys to its correspondents in the keyboard: 1-9 and A-F.
 
+## More screenshots
+
+![CHIP-8 Emulator screenshot](https://goo.gl/jNAWx7 "CHIP-8 Emulator") ![CHIP-8 Emulator screenshot](https://goo.gl/QSzU27 "CHIP-8 Emulator")
+
+![CHIP-8 Emulator screenshot](https://goo.gl/gXxrFe "CHIP-8 Emulator")
 
 ## Built With
 
@@ -47,12 +54,16 @@ The current implementation maps these keys to its correspondents in the keyboard
 * [Java CHIP-8 Emulator](https://github.com/Johnnei/Youtube-Tutorials/tree/master/emulator_chip8) - Original CHIP-8 Emulator Java code developed by Johan 
 
 
+![CHIP-8 Emulator screenshot](https://goo.gl/BAF6Ub "CHIP-8 Emulator")
+
 ## Authors
 
 * **Johan** - *Original Java code* - [CHIP-8 Java](https://github.com/Johnnei/Youtube-Tutorials/tree/master/emulator_chip8)
 * **Vitor Almeida da Silva** - *Port to Godot* - [Godot CHIP-8 Emulator](https://github.com/vitoralmeidasilva)
 
+![CHIP-8 Emulator screenshot](https://goo.gl/ibFzuW "CHIP-8 Emulator")
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
